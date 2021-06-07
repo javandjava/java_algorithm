@@ -8,22 +8,143 @@ package com.istella.algoriathm.link;
 public class Link {
 
     public static void main(String[] args){
-        int[] ns={1,2,3,4,5};
+        int[] ns={1,2,2};
+//        int[] ns1={1,2,4};
+//        int[] ns2={1,3,4};
+        ListNode c;
         ListNode head=new ListNode(ns[0]);
-        ListNode t=head;
+        c=head;
         for (int n=1;n<ns.length;n++){
             ListNode node=new ListNode(ns[n]);
-            head.next=node;
-            head=node;
+            c.next=node;
+            c=node;
+        }
+//
+//        ListNode head1=new ListNode(ns1[0]);
+//        c=head1;
+//        for (int n=1;n<ns1.length;n++){
+//            ListNode node=new ListNode(ns1[n]);
+//            c.next=node;
+//            c=node;
+//        }
+//
+//        ListNode head2=new ListNode(ns2[0]);
+//        c=head2;
+//        for (int n=1;n<ns2.length;n++){
+//            ListNode node=new ListNode(ns2[n]);
+//            c.next=node;
+//            c=node;
+//        }
+//        ListNode t=mergeTwoLists(head1,head2);
+//        while (t!=null){
+//            System.out.println(t.val);
+//            t=t.next;
+//        }
+
+        System.out.println(isPalindrome(head));
+
+    }
+
+    /**
+     * 请判断一个链表是否为回文链表。
+     * @param head
+     * @return
+     */
+    public static boolean isPalindrome(ListNode head) {
+        int total=0;
+        ListNode node=head;
+        while (node!=null){
+            total++;
+            node=node.next;
+        }
+        if(total==1)
+            return true;
+        int m=total%2;
+        total=total/2;
+        ListNode[] nodes=new ListNode[total];
+        node=head;
+        int p=0;
+        for(;p<total;p++){
+            nodes[p]=node;
+            node=node.next;
+        }
+        if(m==1){
+            node=node.next;
+        }
+        while (node!=null){
+            p--;
+            if(nodes[p].val!=node.val){
+                return false;
+            }
+            node=node.next;
         }
 
-        t=removeNthFromEnd(t,5);
+        return true;
+    }
 
-        while (t!=null){
-            System.out.println(t.val);
+    /**
+     * 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1==null)
+            return l2;
+        if(l2==null)
+            return l1;
+
+        ListNode head=new ListNode(l1.val);
+        ListNode c1=l1;
+        ListNode c2=l2;
+        if(c1.val<c2.val){
+            head.val=c1.val;
+            c1=c1.next;
+        }else {
+            head.val=c2.val;
+            c2=c2.next;
+        }
+        ListNode t=head;
+        while (c1!=null||c2!=null){
+            if(c1==null) {
+                t.next = c2;
+                break;
+            }
+            else if(c2==null) {
+                t.next = c1;
+                break;
+            }
+            else if(c1.val<= c2.val){
+                t.next=new ListNode(c1.val);
+                c1=c1.next;
+            }else {
+                t.next=new ListNode(c2.val);
+                c2=c2.next;
+            }
             t=t.next;
         }
 
+        return head;
+    }
+
+    /**
+     * 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+     * @param head
+     * @return
+     */
+    public static ListNode reverseList(ListNode head) {
+        if(head==null||head.next==null)
+            return head;
+        ListNode c=head;
+        ListNode next=head.next;
+        c.next=null;
+        while (next!=null){
+            ListNode t=next.next;
+            next.next=c;
+            c=next;
+            next=t;
+        }
+        return c;
     }
 
     /**
