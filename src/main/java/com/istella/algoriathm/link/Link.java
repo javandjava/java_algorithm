@@ -8,17 +8,17 @@ package com.istella.algoriathm.link;
 public class Link {
 
     public static void main(String[] args){
-        int[] ns={1,2,2};
+        int[] ns={1};
 //        int[] ns1={1,2,4};
 //        int[] ns2={1,3,4};
-        ListNode c;
-        ListNode head=new ListNode(ns[0]);
-        c=head;
-        for (int n=1;n<ns.length;n++){
-            ListNode node=new ListNode(ns[n]);
-            c.next=node;
-            c=node;
-        }
+//        ListNode c;
+//        ListNode head=new ListNode(ns[0]);
+//        c=head;
+//        for (int n=1;n<ns.length;n++){
+//            ListNode node=new ListNode(ns[n]);
+//            c.next=node;
+//            c=node;
+//        }
 //
 //        ListNode head1=new ListNode(ns1[0]);
 //        c=head1;
@@ -41,9 +41,62 @@ public class Link {
 //            t=t.next;
 //        }
 
-        System.out.println(isPalindrome(head));
+//        System.out.println(isPalindrome(head));
+
+        int pos=-1;
+        int p=0;
+        ListNode cycle=null;
+        ListNode c;
+        ListNode head=new ListNode(ns[0]);
+        c=head;
+        for (int n=1;n<ns.length;n++){
+            ListNode node=new ListNode(ns[n]);
+            if(pos==n)
+                cycle=node;
+            c.next=node;
+            c=node;
+        }
+
+        if(cycle!=null){
+            c.next=cycle;
+        }
+
+        c=head;
+        int time=0;
+        while (c!=null){
+            System.out.println(c.val);
+            if(cycle==c){
+                if(time>=1)
+                    break;
+                time++;
+            }
+            c=c.next;
+        }
+
+        System.out.println(hasCycle(head));
 
     }
+
+    /**
+     * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环
+     * @param head
+     * @return
+     */
+    public static boolean hasCycle(ListNode head) {
+        if(head==null)
+            return false;
+        ListNode c=head;
+        ListNode fc=head;
+        while (fc!=null&&fc.next!=null){
+            fc=fc.next.next;
+            c=c.next;
+            if(fc==c)
+                return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * 请判断一个链表是否为回文链表。
